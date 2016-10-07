@@ -130,7 +130,6 @@ submailControl.sendVerifyCode = function(appId,mobile,template,callback)
     //尝试刷新验证码记录
     submailControl.tryRefreshVerifyCode(appId,mobile,function(refreshResult)
     {
-        console.log(refreshResult);
         if(refreshResult.code === code.success)
         {
             submailControl.sendMessage(appId,mobile,template,refreshResult.data,function(sendMessageResult)
