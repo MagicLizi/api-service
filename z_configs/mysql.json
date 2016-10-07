@@ -4,7 +4,7 @@
     "host": "139.196.210.143",
     "port": "3306",
     "user": "'root'",
-    "password": "ll09280416",
+    "password": "ll092804161",
     "database": "api-service"
   }
 }
