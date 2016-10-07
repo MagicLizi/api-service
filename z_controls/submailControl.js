@@ -9,14 +9,113 @@ var executor = dataAccess.executor;
 var netData = require("../z_models/netData");
 var code = require("../z_util/code");
 
-
+//验证码长度
+var verifyCodeLength = 6;
+var verifyCoolDown = 60;
 /**
  * 生成验证码
  */
 var verifyCodeGen = function()
 {
+    //生成验证码
+    var verifyCode = '';
+    for(var i = 0;i < verifyCodeLength ;i++)
+    {
+        var num = Math.floor(Math.random()*10);
+        verifyCode = verifyCode + (num + "");
+    }
+    return verifyCode;
+}
 
-};
+/**
+ * 刷新验证码记录
+ * @param appId
+ * @param mobile
+ * @param callback
+ */
+submailControl.tryRefreshVerifyCode = function(appId,mobile,callback)
+{
+    //检查是否存在有效的
+    var existCommand = new command("SELECT * FROM mobileVerify WHERE appId = ? AND mobile = ? AND isValied = 1",[appId,mobile]);
+    executor.query('api-service',existCommand,function(e,r)
+    {
+        var refreshResult;
+        if(e)
+        {
+            refreshResult = new netData(code.submail.refreshVerifyCodeError,{}, e.stack);
+            callback(refreshResult);
+        }
+        else
+        {
+            if(r.length === 0)
+            {
+                var verifyCode = verifyCodeGen();
+                //不存在插入
+                var insertCommand = new command("INSERT INTO mobileVerify(appId,mobile,verifyCode,isValied,createAt) VALUES(?,?,?,?,?)",
+                    [appId,mobile,verifyCode,1,parseInt(new Date().getTime()/1000)]);
+                executor.query('api-service',insertCommand,function(e1,r1)
+                {
+                    if(e1)
+                    {
+                        refreshResult = new netData(code.submail.refreshVerifyCodeError,{}, e1.stack);
+                        callback(refreshResult);
+                    }
+                    else
+                    {
+                        refreshResult = new netData(code.success,{code:verifyCode}, "刷新验证码成功!");
+                        callback(refreshResult);
+                    }
+                });
+            }
+            else
+            {
+                var createAt = parseInt(r[0]["createAt"]);
+                var curTime = parseInt(new Date().getTime()/1000);
+                var dis = curTime - createAt;
+                var id = r[0]["id"];
+                if(dis >= verifyCoolDown)
+                {
+                    //设置无效
+                    var updateCommand = new command("UPDATE mobileVerify SET isValied = 0 WHERE id = ?",[id]);
+                    executor.query('api-service',updateCommand,function(e2,r2)
+                    {
+                        if(e2)
+                        {
+                            refreshResult = new netData(code.submail.refreshVerifyCodeError,{}, e2.stack);
+                            callback(refreshResult);
+                        }
+                        else
+                        {
+                            //插入
+                            var verifyCode = verifyCodeGen();
+                            //不存在插入
+                            var insertCommand = new command("INSERT INTO mobileVerify(appId,mobile,verifyCode,isValied,createAt) VALUES(?,?,?,?,?)",
+                                [appId,mobile,verifyCode,1,parseInt(new Date().getTime()/1000)]);
+                            executor.query('api-service',insertCommand,function(e1,r1)
+                            {
+                                if(e1)
+                                {
+                                    refreshResult = new netData(code.submail.refreshVerifyCodeError,{}, e1.stack);
+                                    callback(refreshResult);
+                                }
+                                else
+                                {
+                                    refreshResult = new netData(code.success,{code:verifyCode}, "刷新验证码成功!");
+                                    callback(refreshResult);
+                                }
+                            });
+                        }
+                    })
+                }
+                else
+                {
+                    refreshResult = new netData(code.submail.refreshVerifyCodeError,{}, "验证码获取频率过高,请稍后再试!");
+                    callback(refreshResult);
+                }
+            }
+        }
+    });
+}
 
 /**
  * 发送短信验证码
@@ -27,22 +126,31 @@ var verifyCodeGen = function()
  */
 submailControl.sendVerifyCode = function(appId,mobile,template,callback)
 {
-    var verifyCode =
+
+    //尝试刷新验证码记录
+    submailControl.tryRefreshVerifyCode(appId,mobile,function(refreshResult)
     {
-        code:"12345"
-    }
-    submailControl.sendMessage(appId,mobile,template,verifyCode,function(sendMessageResult)
-    {
-        if(sendMessageResult.code !== code.success)
+        console.log(refreshResult);
+        if(refreshResult.code === code.success)
         {
-            callback(sendMessageResult);
+            submailControl.sendMessage(appId,mobile,template,refreshResult.data,function(sendMessageResult)
+            {
+                if(sendMessageResult.code !== code.success)
+                {
+                    callback(sendMessageResult);
+                }
+                else
+                {
+                    sendMessageResult.data.coolDown = verifyCoolDown;
+                    callback(sendMessageResult);
+                }
+            })
         }
         else
         {
-            sendMessageResult.data.coolDown = 60;
-            callback(sendMessageResult);
+            callback(refreshResult);
         }
-    })
+    });
 }
 
 

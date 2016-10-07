@@ -10,7 +10,8 @@ module.exports =
     submail:{
         getSubmailAppInfoError:100001,
         sendMessageError:100002,
-        submailAppNotExist:100003
+        submailAppNotExist:100003,
+        refreshVerifyCodeError:10004
     },
     log:{
         logError:20001
