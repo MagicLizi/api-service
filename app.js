@@ -9,7 +9,8 @@ var frontFilter = require("./z_middles/frontFilter");
 var requestFilter = require("./z_middles/requestFilter");
 var backFilter = require("./z_middles/backFilter");
 var errorFilter = require("./z_middles/errorFilter");
-
+var dataAccess = require("dataAccess");
+dataAccess.setPoolConfig(require("./z_configs/mysql.json"));
 var app = express();
 
 // view engine setup
@@ -37,3 +38,5 @@ app.use(backFilter);
 app.use(errorFilter);
 
 module.exports = app;
+
+

@@ -2,5 +2,9 @@
   {
     "name" : "index",
     "path" : "/"
+  },
+  {
+    "name" : "submail",
+    "path" : "/submail"
   }
 ]

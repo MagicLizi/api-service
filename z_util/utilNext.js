@@ -27,9 +27,9 @@ utilNext.utilRender = function(netData,pageName,res,next)
  */
 utilNext.utilSend = function(netData,res,next)
 {
+    var error = null;
     res.netData = netData;
     res.send(netData);
-    var error = null;
     if(netData.code !== code.success)
     {
         error = new Error(JSON.stringify(netData));

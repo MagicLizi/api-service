@@ -40,3 +40,5 @@ jspm_packages
 
 .idea
 
+/z_configs/mysql.json
+
