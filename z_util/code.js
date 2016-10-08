@@ -11,14 +11,17 @@ module.exports =
         getSubmailAppInfoError:100001,
         sendMessageError:100002,
         submailAppNotExist:100003,
-        refreshVerifyCodeError:10004
+        refreshVerifyCodeError:100004,
+        getMobileVerifyCodeError:100005,
+        verifyCodeError:100006,
+        refreshVerifyCodeStateError:100007
     },
     log:{
-        logError:20001
+        logError:200001
     },
     app:{
-        getAppInfoError:30001,
-        appIdNotExist:30002,
-        signatureVerifyError:30003
+        getAppInfoError:300001,
+        appIdNotExist:300002,
+        signatureVerifyError:300003
     }
 }

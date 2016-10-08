@@ -22,6 +22,21 @@ router.get("/mobileVerifyCode",function(req,res,next)
 
 
 /**
+ * 验证短信验证码
+ */
+router.post("/verifyCode",function(req,res,next)
+{
+    var mobile = req.body["mobile"];
+    var verifyCode = req.body["verifyCode"];
+    var appId = req.body['appId'];
+    submailControl.verifyCode(appId,mobile,verifyCode,function(vResult)
+    {
+        utilNext.utilSend(vResult,res,next);
+    })
+});
+
+
+/**
  * 获取邮件验证码
  */
 router.get("/mailCode",function(req,res,next)

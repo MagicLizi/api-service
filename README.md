@@ -33,6 +33,8 @@ api.xiaolibaobao.love
 
 * 注册subMail并且设置完成相应参数获取短信服务的appId以及appKey，提交于我
 
+### 获取验证码
+
 * 接口 : /submail/mobileVerifyCode
 
 * 方法 : GET
@@ -51,6 +53,7 @@ api.xiaolibaobao.love
 	}
 	
 	Request : api.xiaolibaobao.love/submail/mobileVerifyCode?mobile=13501801181&template=4SnDQ
+	
 	Response : 
 	{
   		"code": 200,
@@ -59,6 +62,41 @@ api.xiaolibaobao.love
     		"coolDown": 60 //验证码冷却时间
   		},
   		"message": "消息发送成功"
+	}
+	```
+	
+### 验证验证码
+
+* 接口 : /submail/verifyCode
+
+* 方法 : POST
+
+* 参数 : 
+	1. mobile 手机号码
+	2. verifyCode 验证码
+
+* Example :
+	
+	```
+	Header : 
+	{
+		appId : lizi,
+		signature : 6f23707f11f4daa6295ff823da35ce0c99e5e52d
+	}
+	
+	Request : api.xiaolibaobao.love/submail/verifyCode
+	
+	Body : 
+	{
+		mobile : 13501801181,
+		verifyCode : 992063
+	}
+	
+	Response : 
+	{
+  		"code": 200,
+  		"data": {},
+  		"message": "验证码正确!"
 	}
 	```
 

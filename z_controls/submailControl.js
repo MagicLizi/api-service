@@ -197,3 +197,59 @@ submailControl.sendMessage = function(appId,mobile,template,messageParams,callba
         }
     });
 };
+
+/**
+ * 验证短信验证码
+ * @param appId
+ * @param mobile
+ * @param verifyCode
+ * @param callback
+ */
+submailControl.verifyCode = function(appId,mobile,verifyCode,callback)
+{
+     var getCodeCommand = new command('SELECT * FROM mobileVerify WHERE mobile = ? AND appId = ? AND isValied = 1',[mobile,appId]);
+     executor.query("api-service",getCodeCommand,function(e,r)
+     {
+         var verifyResult;
+         if(e)
+         {
+             verifyResult = new netData(code.submail.getMobileVerifyCodeError,{}, e.stack);
+             callback(verifyResult);
+         }
+         else
+         {
+             if(r.length <=0)
+             {
+                 verifyResult = new netData(code.submail.verifyCodeError,{}, "验证码错误!");
+                 callback(verifyResult);
+             }
+             else
+             {
+                var realVerifyCode = r[0].verifyCode;
+                if(realVerifyCode === verifyCode)
+                {
+                    //刷新验证码
+                    var verifyCodeId = r[0].id;
+                    var updateCommand = new command("UPDATE mobileVerify SET isValied = 0 WHERE id = ?",[verifyCodeId]);
+                    executor.query('api-service',updateCommand,function(e1,r1)
+                    {
+                        if(e1)
+                        {
+                            verifyResult = new netData(code.submail.refreshVerifyCodeStateError,{}, "刷新验证码状态错误!");
+                        }
+                        else
+                        {
+                            verifyResult = new netData(code.success,{}, "验证码正确!");
+                        }
+                        callback(verifyResult);
+                    })
+                }
+                else
+                {
+                    verifyResult = new netData(code.submail.verifyCodeError,{}, "验证码错误!");
+                    callback(verifyResult);
+                }
+             }
+         }
+     });
+}
