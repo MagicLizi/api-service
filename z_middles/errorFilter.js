@@ -21,7 +21,7 @@ var errorFilter = function(err,req,res,next)
     }
 
     //记录log
-    logControl.log(requestUrl,JSON.stringify(reqParams),err.stack,function(logResult)
+    logControl.log(req.hostname + " | " + req.ip,requestUrl,JSON.stringify(reqParams),err.stack,function(logResult)
     {
 
     });

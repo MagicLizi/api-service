@@ -15,5 +15,10 @@ module.exports =
     },
     log:{
         logError:20001
+    },
+    app:{
+        getAppInfoError:30001,
+        appIdNotExist:30002,
+        signatureVerifyError:30003
     }
 }
