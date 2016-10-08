@@ -70,7 +70,7 @@ var verifySignature = function(appId,signature,params,callback)
            }
            else
            {
-               verifyResult = new netData(code.app.signatureVerifyError,{appId:appId,signature:signature,params:params,serverSignature:serverSignature},"验证签名错误!")
+               verifyResult = new netData(code.app.signatureVerifyError,{appId:appId,signature:signature,params:params},"验证签名错误!")
            }
            callback(verifyResult);
        }
