@@ -61,6 +61,7 @@ var verifySignature = function(appId,signature,params,callback)
             //验证
            var appSecret = appResult["data"]["appSecret"];
            var hashStr = appId + "&" + appSecret + "&" + JSON.stringify(params);
+           console.log("加密参数:"+hashStr);
            var serverSignature = vrcrypto.toHash(hashStr);
            console.log("当前sig:"+serverSignature);
            var verifyResult;
