@@ -39,7 +39,7 @@ router.post("/verifyCode",function(req,res,next)
 /**
  * 发送短信
  */
-router.get('mobileMsg',function(req,res,next)
+router.get('/mobileMsg',function(req,res,next)
 {
     var mobile = req.query["mobile"];
     var template = req.query["template"];
