@@ -37,6 +37,20 @@ router.post("/verifyCode",function(req,res,next)
 
 
 /**
+ * 发送短信
+ */
+router.get('mobileMsg',function(req,res,next)
+{
+    var mobile = req.query["mobile"];
+    var template = req.query["template"];
+    var appId = req.query["appId"];
+    submailControl.sendMessage(appId,mobile,template,{},function(sendResult)
+    {
+        utilNext.utilSend(sendResult,res,next);
+    })
+});
+
+/**
  * 获取邮件验证码
  */
 router.get("/mailCode",function(req,res,next)
