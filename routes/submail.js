@@ -44,7 +44,7 @@ router.get('/mobileMsg',function(req,res,next)
     var mobile = req.query["mobile"];
     var template = req.query["template"];
     var appId = req.query["appId"];
-    submailControl.sendMessage(appId,mobile,template,{t:''},function(sendResult)
+    submailControl.sendMessage(appId,mobile,template,{},function(sendResult)
     {
         utilNext.utilSend(sendResult,res,next);
     })

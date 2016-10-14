@@ -162,7 +162,6 @@ submailControl.sendVerifyCode = function(appId,mobile,template,callback)
  */
 submailControl.sendMessage = function(appId,mobile,template,messageParams,callback)
 {
-    console.log(appId,mobile,template);
     //通过appid 获取 submail appid 和 appkey
     var submailCommand = new command("SELECT * FROM submail WHERE appId = ?",[appId]);
     executor.query('api-service',submailCommand,function(e,r)
@@ -175,7 +174,6 @@ submailControl.sendMessage = function(appId,mobile,template,messageParams,callba
         }
         else
         {
-            console.log(r);
             if(r.length > 0)
             {
                 var submailInfo = r[0];
