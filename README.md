@@ -165,6 +165,7 @@ api.xiaolibaobao.love
    formData.append('signature', signature);
    formData.append("file", $("#upLoad")[0].files[0]); //input 标签种的文件信息
  
+   //上传
    $.ajax({
            url : upLoadUrl,
            type : 'POST',
@@ -179,6 +180,6 @@ api.xiaolibaobao.love
            error : function(responseStr)
            {
               alert('上传失败！');
-           }});
+    }});
 ```
 
