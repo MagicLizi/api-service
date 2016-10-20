@@ -7,7 +7,7 @@ function upLoadFile()
 {
     var sendData =
     {
-        "bucket": "lizi-files",
+        bucket: "lizi-files",
         fileUri:$("#upLoad").val(),
     }
 

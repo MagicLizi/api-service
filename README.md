@@ -12,7 +12,7 @@ appId : ""
 signatrue : ""
 ```
 
-* appId和appSecre获取方式：  
+* appId和appSecret获取方式：  
 
 	1. 人肉
 	2. 邮箱
@@ -99,4 +99,86 @@ api.xiaolibaobao.love
   		"message": "验证码正确!"
 	}
 	```
+	
+## upyun文件上传服务
+主要是用upyun云的FORM API通过签名方式直接上传文件到对应bucket，注册又拍云并且创建服务，并且启用服务的表单API
+
+### 获取签名
+
+* 接口 ：/upyun/uploadSign
+
+* 方法 ：GET 
+
+* 参数 ：
+    1. bucket  上传服务名
+    2. fileUri 本地文件路径
+
+* Example
+
+```
+    Header : 
+    {
+        appId : lizi,
+        signature : 094edf5ac4c674950a8aee8043d6cd72d604a2ed
+    }
+    
+    Request : api.xiaolibaobao.love/upyun/uploadSign
+    
+    Body : 
+    {
+        bucket : “lizi-files”,
+        fileUri : “/Desktop/avatar.jpg”
+    }
+    
+    Response : 
+    {
+      {
+        "code": 200,
+        "data": {
+            "upLoadUrl": "http://v0.api.upyun.com/lizi-files",//上传路径
+            "signature": "",//签名
+            "policy":"",//policy
+            "fileLoadDomain": "http://lizi-files.b0.upaiyun.com/"//上传成功后，图片url的域
+        },
+        "message": "获取上传签名信息成功！"
+     }
+    }
+```
+
+
+### 上传文件到upyun(http post)
+
+获取签名后，客户端或者浏览器，直接向upyun上传文件,不经再经过服务器
+
+* AJAX 上传（Example）
+
+```
+    //签名接口获取的数据
+    var signature = result.data.signature;
+    var policy = result.data.policy;
+    var upLoadUrl = result.data.upLoadUrl;
+    var fileDomainUrl = result.data.fileLoadDomain;
+    
+   //formData 参数
+   var formData = new FormData();
+   formData.append('policy', policy);
+   formData.append('signature', signature);
+   formData.append("file", $("#upLoad")[0].files[0]); //input 标签种的文件信息
+ 
+   $.ajax({
+           url : upLoadUrl,
+           type : 'POST',
+           data : formData,
+           dataType:'json',
+           processData : false,
+           contentType : false,
+           success : function(responseStr)
+           {
+              alert('上传成功，文件地址:' + fileDomainUrl + responseStr.url);
+           },
+           error : function(responseStr)
+           {
+              alert('上传失败！');
+           }});
+```
 
