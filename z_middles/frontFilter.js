@@ -6,6 +6,7 @@ var code = require("../z_util/code");
 var netData = require("../z_models/netData");
 var utilNext = require("../z_util/utilNext");
 var vrcrypto = require("../z_util/vrcrypto");
+
 //请求前置过滤器
 var frontFilter = function(req,res,next)
 {
@@ -29,22 +30,31 @@ var frontFilter = function(req,res,next)
         reqParams = req.body;
     }
 
-    //验证签名
-    verifySignature(appId,signature,clearParams,function(verifyResult)
+
+    console.log("--------------------");
+    console.log("开始处理请求:" + requestUrl);
+    console.log("请求方法:" + method);
+    console.log("请求参数:" + JSON.stringify(reqParams));
+
+    if(requestUrl === "/" || requestUrl === "/favicon.ico")
     {
-        if(verifyResult.code !== code.success)
+        next();
+    }
+    else
+    {
+        //验证签名
+        verifySignature(appId,signature,clearParams,function(verifyResult)
         {
-            utilNext.utilSend(verifyResult,res,next);
-        }
-        else
-        {
-            console.log("--------------------");
-            console.log("开始处理请求:" + requestUrl);
-            console.log("请求方法:" + method);
-            console.log("请求参数:" + JSON.stringify(reqParams));
-            next();
-        }
-    })
+            if(verifyResult.code !== code.success)
+            {
+                utilNext.utilSend(verifyResult,res,next);
+            }
+            else
+            {
+                next();
+            }
+        })
+    }
 }
 
 /**

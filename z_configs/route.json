@@ -6,5 +6,9 @@
   {
     "name" : "submail",
     "path" : "/submail"
+  },
+  {
+    "name" : "upyun",
+    "path" : "/upyun"
   }
 ]

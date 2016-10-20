@@ -40,3 +40,14 @@ vrcrypto.toHash = function(str)
     sha1.update(str);
     return sha1.digest('hex');
 }
+
+/**
+ * md5
+ * @param str
+ */
+vrcrypto.toMD5 = function(str)
+{
+    var md5 = crypto.createHash('md5');
+    md5.update(str);
+    return md5.digest('hex');
+}

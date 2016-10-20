@@ -23,5 +23,10 @@ module.exports =
         getAppInfoError:300001,
         appIdNotExist:300002,
         signatureVerifyError:300003
+    },
+    upyun:
+    {
+        getUpyunInfoError:400001,
+        noneUpyunInfo:400002
     }
 }
