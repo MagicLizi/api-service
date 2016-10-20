@@ -153,11 +153,11 @@ api.xiaolibaobao.love
 * AJAX 上传（Example）
 
 ```
-    //签名接口获取的数据
-    var signature = result.data.signature;
-    var policy = result.data.policy;
-    var upLoadUrl = result.data.upLoadUrl;
-    var fileDomainUrl = result.data.fileLoadDomain;
+   //签名接口获取的数据
+   var signature = result.data.signature;
+   var policy = result.data.policy;
+   var upLoadUrl = result.data.upLoadUrl;
+   var fileDomainUrl = result.data.fileLoadDomain;
     
    //formData 参数
    var formData = new FormData();
