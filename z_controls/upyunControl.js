@@ -47,8 +47,22 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
                     policy:policy,
                     fileLoadDomain:'http://' + bucket + '.b0.upaiyun.com/'
                 },"获取上传签名信息成功！");
+                upyunControl.logUpload(appId,'http://' + bucket + '.b0.upaiyun.com/' + vrcrypto.toMD5(fileUri + new Date().getTime()/1000));
             }
         }
         callback(signResult);
     });
 }
+
+
+/**
+ * 纪录
+ */
+upyunControl.logUpload = function(appId,fileUrl)
+{
+    var logCommand = new command('INSERT INTO uploadLog(appId,fileUrl,createAt) VALUES(?,?,?)',[appId,fileUrl,new Date().getTime()/1000]);
+    executor.query('api-service',logCommand,function(e,r)
+    {
+
+    })
+};
