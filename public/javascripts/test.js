@@ -21,11 +21,11 @@ function upLoadFile()
         beforeSend: function (request) {
             //请求前的处理
             request.setRequestHeader("appId", "lizi");
-            request.setRequestHeader("signature", "a46790dc84378e52a641e654e50eee9dc65b796b");
+            request.setRequestHeader("signature", "54be387cb28f916158578bfe11f219e1b935154f");
         },
         success: function (result) {
-            console.log(result);
             //请求成功时处理
+            console.log(result);
             if(result.code === 200)
             {
                 var signature = result.data.signature;
@@ -52,6 +52,7 @@ function upLoadFile()
                     },
                     error : function(responseStr)
                     {
+                        console.log(responseStr);
                         alert('上传失败！');
                     }
                 });

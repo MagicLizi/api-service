@@ -74,6 +74,7 @@ var verifySignature = function(appId,signature,params,callback)
            console.log("加密参数:"+hashStr);
            var serverSignature = vrcrypto.toHash(hashStr);
            console.log("当前sig:"+serverSignature);
+           console.log("传递进来的sig:"+signature);
            var verifyResult;
            if(serverSignature === signature)
            {
