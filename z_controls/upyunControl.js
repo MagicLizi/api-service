@@ -37,9 +37,9 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
                 var secret = upyunInfo['secret'];
                 var policyObj =
                 {
-                    'bucket' : bucket,
-                    'expiration' : new Date().getTime()/1000 + 3600,
-                    'save-key' : saveKey
+                    "bucket" : bucket,
+                    "expiration" : ~~(new Date().getTime()/1000 + 3600),
+                    "save-key" : saveKey
                 }
                 console.log(policyObj);
                 var policy = Base64.encode(JSON.stringify(policyObj));
