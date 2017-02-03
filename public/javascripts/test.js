@@ -35,7 +35,7 @@ function upLoadFile()
                 formData.append('policy', policy);
                 formData.append('signature', signature);
                 formData.append("file", $("#upLoad")[0].files[0]);
-
+                console.log($("#upLoad")[0].files[0]);
                 $.ajax({
                     url : upLoadUrl,
                     type : 'POST',
