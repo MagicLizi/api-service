@@ -43,13 +43,15 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
 
                 var policy = Base64.encode(JSON.stringify(policyObj));
                 var signature = vrcrypto.toMD5(policy + "&" + secret);
+                var saveUrl = 'http://' + bucket + '.b0.upaiyun.com/' + saveKey;
                 signResult = new netData(code.success,{
                     upLoadUrl:'http://v0.api.upyun.com/'+ bucket,
                     signature:signature,
                     policy:policy,
-                    fileLoadDomain:'http://' + bucket + '.b0.upaiyun.com/'
+                    fileLoadDomain:'http://' + bucket + '.b0.upaiyun.com/',
+                    saveUrl:saveUrl
                 },"获取上传签名信息成功！");
-                upyunControl.logUpload(appId,'http://' + bucket + '.b0.upaiyun.com/' + saveKey);
+                upyunControl.logUpload(appId,saveUrl);
             }
         }
         callback(signResult);
