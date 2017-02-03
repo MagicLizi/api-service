@@ -5,6 +5,7 @@
 
 function upLoadFile()
 {
+    console.log('upload');
     var sendData =
     {
         bucket: "lizi-files",
