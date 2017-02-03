@@ -37,11 +37,11 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
                 var secret = upyunInfo['secret'];
                 var policyObj =
                 {
-                    "bucket" : bucket,
-                    "expiration" : ~~(new Date().getTime()/1000 + 3600),
-                    "save-key" : saveKey
+                    'bucket' : bucket,
+                    'expiration' : ~~((new Date().getTime() + 3600000)/1000),
+                    'save-key' : saveKey
                 }
-                console.log(policyObj);
+
                 var policy = Base64.encode(JSON.stringify(policyObj));
                 var signature = vrcrypto.toMD5(policy + "&" + secret);
                 signResult = new netData(code.success,{
