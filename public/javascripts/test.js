@@ -24,6 +24,7 @@ function upLoadFile()
             request.setRequestHeader("signature", "a46790dc84378e52a641e654e50eee9dc65b796b");
         },
         success: function (result) {
+            console.log(result);
             //请求成功时处理
             if(result.code === 200)
             {
@@ -62,9 +63,10 @@ function upLoadFile()
         {
             //请求完成的处理
         },
-        error: function ()
+        error: function (e)
         {
             //请求出错处理
+            console.log(e);
         }
     })
 }
