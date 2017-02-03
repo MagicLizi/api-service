@@ -31,8 +31,8 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
             }
             else
             {
-                fileUri = encodeURI(fileUri) + '.jpg';
-                var saveKey = vrcrypto.toMD5(fileUri + new Date().getTime()/1000);
+                fileUri = encodeURI(fileUri);
+                var saveKey = vrcrypto.toMD5(fileUri + new Date().getTime()/1000) + '.jpg';
                 var upyunInfo = r[0];
                 var secret = upyunInfo['secret'];
                 var policyObj =
