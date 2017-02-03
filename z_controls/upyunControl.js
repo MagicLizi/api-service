@@ -31,13 +31,15 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
             }
             else
             {
+                fileUri = encodeURI(fileUri);
+                var saveKey = vrcrypto.toMD5(fileUri + new Date().getTime()/1000);
                 var upyunInfo = r[0];
                 var secret = upyunInfo['secret'];
                 var policyObj =
                 {
                     'bucket' : bucket,
-                    'expiration' : new Date().getTime()/1000 + 60,
-                    'save-key' : vrcrypto.toMD5(fileUri + new Date().getTime()/1000)
+                    'expiration' : new Date().getTime()/1000 + 3600,
+                    'save-key' : saveKey
                 }
                 var policy = Base64.encode(JSON.stringify(policyObj));
                 var signature = vrcrypto.toMD5(policy + "&" + secret);
@@ -47,7 +49,7 @@ upyunControl.getSign = function(appId,bucket,fileUri,callback)
                     policy:policy,
                     fileLoadDomain:'http://' + bucket + '.b0.upaiyun.com/'
                 },"获取上传签名信息成功！");
-                upyunControl.logUpload(appId,'http://' + bucket + '.b0.upaiyun.com/' + vrcrypto.toMD5(fileUri + new Date().getTime()/1000));
+                upyunControl.logUpload(appId,'http://' + bucket + '.b0.upaiyun.com/' + saveKey);
             }
         }
         callback(signResult);
