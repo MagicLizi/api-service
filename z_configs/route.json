@@ -10,5 +10,9 @@
   {
     "name" : "upyun",
     "path" : "/upyun"
+  },
+  {
+    "name" : "version",
+    "path" : "/version"
   }
 ]

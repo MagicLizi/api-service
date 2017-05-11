@@ -28,5 +28,8 @@ module.exports =
     {
         getUpyunInfoError:400001,
         noneUpyunInfo:400002
+    },
+    version:{
+        getOnlineVersionInfoError:500001
     }
 }

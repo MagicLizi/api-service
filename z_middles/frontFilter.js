@@ -10,9 +10,8 @@ var vrcrypto = require("../z_util/vrcrypto");
 //请求前置过滤器
 var frontFilter = function(req,res,next)
 {
-   // console.log(req);
-    var signature = req.headers.signature;
     var appId = req.headers.appid;
+    var signature = appId === 'loan'?req.headers['sig']:req.headers.signature;
     var requestUrl = req.originalUrl;
     var method = req.method;
     var reqParams = {};
