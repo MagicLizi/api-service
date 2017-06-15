@@ -62,7 +62,8 @@ router.get("/voiceMsg",function (req,res,next) {
     var mobile = req.query["mobile"];
     var template = req.query["template"];
     var appId = req.query["appId"];
-    submailControl.sendVoiceMessage(appId,mobile,template,{},function(sendResult) {
+    var name = req.query["name"];
+    submailControl.sendVoiceMessage(appId,mobile,template,{name:name},function(sendResult) {
         utilNext.utilSend(sendResult,res,next);
     })
 })
