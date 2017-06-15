@@ -200,7 +200,6 @@ submailControl.sendMessage = function(appId,mobile,template,messageParams,callba
 
 submailControl.sendVoiceMessage = function(appId,mobile,template,messageParams,callback)
 {
-    //通过appid 获取 submail appid 和 appkey
     var submailCommand = new command("SELECT * FROM submail WHERE appId = ?",[appId]);
     executor.query('api-service',submailCommand,function(e,r)
     {
