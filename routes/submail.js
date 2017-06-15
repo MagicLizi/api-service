@@ -58,4 +58,15 @@ router.get("/mailCode",function(req,res,next)
 
 });
 
+
+router.get("/voiceMsg",function (req,res,next) {
+    var mobile = req.query["mobile"];
+    var template = req.query["template"];
+    var appId = req.query["appId"];
+    submailControl.sendVoiceMessage(appId,mobile,template,{},function(sendResult)
+    {
+        utilNext.utilSend(sendResult,res,next);
+    })
+})
+
 module.exports = router;

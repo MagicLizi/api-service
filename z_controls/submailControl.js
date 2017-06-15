@@ -198,6 +198,44 @@ submailControl.sendMessage = function(appId,mobile,template,messageParams,callba
     });
 };
 
+submailControl.sendVoiceMessage = function(appId,mobile,template,messageParams,callback)
+{
+    //通过appid 获取 submail appid 和 appkey
+    var submailCommand = new command("SELECT * FROM submail WHERE appId = ?",[appId]);
+    executor.query('api-service',submailCommand,function(e,r)
+    {
+        var sendMessageResult;
+        if(e)
+        {
+            sendMessageResult = new netData(code.submail.getSubmailAppInfoError,{}, e.stack);
+            callback(sendMessageResult);
+        }
+        else
+        {
+            if(r.length > 0)
+            {
+                var submailInfo = r[0];
+                var subAppId = submailInfo["submailAppId"];
+                var appkey = submailInfo["appkey"];
+                var messageXSend = new MessageXSend(subAppId,'normal',appkey);
+                var messageVar = messageParams;
+                messageXSend.add_to(mobile);
+                messageXSend.set_project(template);
+                for(var key in messageVar){
+                    var v = messageVar[key];
+                    messageXSend.add_var(key,v);
+                }
+                messageXSend.vxsend(callback);
+            }
+            else
+            {
+                sendMessageResult = new netData(code.submail.submailAppNotExist,{},"submail应用不存在!" + appId);
+                callback(sendMessageResult);
+            }
+        }
+    });
+};
+
 /**
  * 验证短信验证码
  * @param appId

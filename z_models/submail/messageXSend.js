@@ -60,6 +60,13 @@ function MessageXSend(appid,signtype,appkey) {
         var message = new Message(appid,signtype,appkey);
         message.xsend(this.build_params(),callback);
     }
+
+    this.vxsend = function(callback){
+        var message = new Message(appid,signtype,appkey);
+        var params = this.build_params();
+        params.to = this.to[0];
+        message.voicexsend(params,callback);
+    }
 };
 
 module.exports = MessageXSend;

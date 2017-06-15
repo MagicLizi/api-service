@@ -27,6 +27,51 @@ function Message(appid,signtype,appkey) {
             });
         });
     };
+
+    this.voicexsend = function(params,callback) {
+        console.log(params);
+        var api = 'https://api.submail.cn/voice/xsend.json';
+        var requestParams = params;
+        requestParams['appid'] = this.appid;
+        var self = this;
+        request({
+            uri: 'https://api.submail.cn/service/timestamp.json',
+            method: 'GET'
+        }, function(error, response, body) {
+            var result = JSON.parse(body);
+            requestParams['timestamp'] = result["timestamp"];
+            requestParams['sign_type'] = self.signtype;
+            requestParams['signature'] = self.createSignature(requestParams);
+            console.log(requestParams);
+            request.post({url: api, formData: requestParams}, function optionalCallback(err, httpResponse, body) {
+                //if (err) {
+                //    return console.error('upload failed:', err);
+                //}
+                console.log('Upload successful!  Server responded with:', body);
+                var sendResult;
+                if(err)
+                {
+                    sendResult = new netData(code.submail.sendMessageError,{},err);
+                }
+                else
+                {
+                    //console.log(body);
+                    //console.log(body.status);
+                    var jBody = JSON.parse(body);
+                    if(jBody.status === "success")
+                    {
+                        sendResult = new netData(code.success,{},"消息发送成功");
+                    }
+                    else
+                    {
+                        sendResult = new netData(code.submail.sendMessageError,{},'Server responded with:'+ body);
+                    }
+                }
+                callback(sendResult);
+            });
+        });
+    };
+
     this.xsend = function(params,callback) {
         var api = 'https://api.submail.cn/message/xsend.json';
         var requestParams = params;
