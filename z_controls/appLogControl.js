@@ -7,8 +7,8 @@ const command = dataAccess.command;
 const executor = dataAccess.executor;
 const code  = require('../z_util/code');
 const netData = require('../z_models/netData');
-AppLogControl.addLog = function(appId,userId,log,callback){
-    let sql = new command('insert into appLog(appId,userId,log,createAt) values(?,?,?,?)',[appId,userId,log,~~(new Date().getTime()/1000)]);
+AppLogControl.addLog = function(appId,userId,log,url,param,callback){
+    let sql = new command('insert into appLog(appId,userId,log,createAt,url,param) values(?,?,?,?,?,?)',[appId,userId,log,~~(new Date().getTime()/1000),url,param]);
     executor.query('api-service',sql,(e,r)=>{
         let result;
         if(e){
