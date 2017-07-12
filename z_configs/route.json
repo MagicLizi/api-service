@@ -14,5 +14,9 @@
   {
     "name" : "version",
     "path" : "/version"
+  },
+  {
+    "name" : "applog",
+    "path" : "/applog"
   }
 ]

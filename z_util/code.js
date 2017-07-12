@@ -31,5 +31,8 @@ module.exports =
     },
     version:{
         getOnlineVersionInfoError:500001
+    },
+    appLog:{
+        addlogError:600001
     }
 }
