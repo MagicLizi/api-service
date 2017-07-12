@@ -35,7 +35,7 @@ var frontFilter = function(req,res,next)
     console.log("请求方法:" + method);
     console.log("请求参数:" + JSON.stringify(reqParams));
 
-    if(requestUrl === "/" || requestUrl === "/favicon.ico")
+    if(requestUrl === "/" || requestUrl === "/favicon.ico" || requestUrl === "/applog/add")
     {
         next();
     }
